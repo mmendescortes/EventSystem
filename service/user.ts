@@ -14,6 +14,11 @@ const Time = require('../utils/time');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 /*
+  Import the JWT library
+*/
+const jwt = require('jsonwebtoken');
+
+/*
   Export the User class
 */
 module.exports = class UserService {
@@ -87,9 +92,12 @@ module.exports = class UserService {
                 });
               }
               if(result.email_confirmed) {
+                const token = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
+                  expiresIn: 300 // expires in 5min
+                });
                 res({
                   'status': 200,
-                  'response': result
+                  'response': token
                 });
               } else {
                 res({
