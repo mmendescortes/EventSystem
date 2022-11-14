@@ -138,4 +138,8 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+# repl.it
 .build/
+.config/
+.replit
+replit.nix
