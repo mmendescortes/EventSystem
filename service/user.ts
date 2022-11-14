@@ -32,7 +32,13 @@ module.exports = class UserService {
       let user = this.user
       User.findOne(
         {
-          'username': user.username
+          '$or': [
+            {
+              'username': user.username
+            }, {
+              'email': user.username
+            }
+          ]
         },
         (err, result) => {
           if (err) {
@@ -80,10 +86,19 @@ module.exports = class UserService {
                   }
                 });
               }
-              res({
-                'status': 200,
-                'response': result
-              });
+              if(result.email_confirmed) {
+                res({
+                  'status': 200,
+                  'response': result
+                });
+              } else {
+                res({
+                  'status': 403,
+                  'response': {
+                    'error': "E-mail not confirmed!"
+                  }
+                });
+              }
             });
           } else {
             res({

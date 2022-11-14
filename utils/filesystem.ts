@@ -17,7 +17,6 @@ module.exports = class FileSystem {
       Set the date as this.date
     */
     this.path = path.join(__dirname, dir);
-    console.log(this.path);
   }
 
   /*

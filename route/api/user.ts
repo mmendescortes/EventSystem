@@ -168,12 +168,12 @@ router.put('/user/:id', function(req, res) {
   Return not allowed method
 */
 router.post('/user/confirm/email/:token', function(req, res) {
-  res.setHeader('Allow', 'PUT')
+  res.setHeader('Allow', 'PUT, GET')
   res.status(405);
   res.json({
       "status": 405,
       "message": 'Unsuported method used!',
-      "allowedMethods": 'PUT'
+      "allowedMethods": 'PUT, GET'
   });
 });
 
@@ -181,25 +181,20 @@ router.post('/user/confirm/email/:token', function(req, res) {
   Return not allowed method
 */
 router.get('/user/confirm/email/:token', function(req, res) {
-  res.setHeader('Allow', 'PUT')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'PUT'
-  });
+  res.status(200);
+  res.send("");
 });
 
 /*
   Return not allowed method
 */
 router.delete('/user/confirm/email/:token', function(req, res) {
-  res.setHeader('Allow', 'PUT')
+  res.setHeader('Allow', 'PUT, GET')
   res.status(405);
   res.json({
       "status": 405,
       "message": 'Unsuported method used!',
-      "allowedMethods": 'PUT'
+      "allowedMethods": 'PUT, GET'
   });
 });
 
