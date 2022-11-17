@@ -72,4 +72,22 @@ module.exports = class UserController {
         let result = userInstance.confirmEmail(token);
         return result;
     }
+
+    /*
+      Reset user password by e-mail
+    */
+    sendResetPasswordEmail(email) {
+        let userInstance = new UserService();
+        let result = userInstance.sendResetPasswordEmail(email);
+        return result;
+    }
+  
+    /*
+      Reset user password by token
+    */
+    resetPassword(token, password) {
+        let userInstance = new UserService();
+        let result = userInstance.resetPassword(token, password);
+        return result;
+    }
 }

@@ -2,8 +2,9 @@
   "name": "eventsystem",
   "version": "1.0.0",
   "description": "System to manage event ticket selling.",
-  "main": "julien.js",
+  "main": "index.js",
   "scripts": {
+    "start": ".build/index.js serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,8 +12,8 @@
     "url": "git+https://github.com/mmendescortes/EventSystem.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Mateus M. Côrtes",
+  "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/mmendescortes/EventSystem/issues"
   },
@@ -27,6 +28,7 @@
     "mongoose": "^6.7.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.8.0",
+    "pug": "^3.0.2",
     "uuid": "^9.0.0"
   }
 }

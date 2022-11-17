@@ -9,6 +9,11 @@ const User = require('../model/user');
 const Time = require('../utils/time');
 
 /*
+  Import the View utility
+*/
+const View = require('../utils/view');
+
+/*
   Import the ObjectId type from Mongoose library
 */
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -93,19 +98,43 @@ module.exports = class UserService {
               }
               if(result.email_confirmed) {
                 const token = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
-                  expiresIn: 300 // expires in 5min
+                  expiresIn: 300
                 });
                 res({
                   'status': 200,
                   'response': token
                 });
               } else {
-                res({
-                  'status': 403,
-                  'response': {
-                    'error': "E-mail not confirmed!"
+                let view = new View('email', 'confirmEmailLink');
+                global.mail.sendMessage(
+                  process.env.MAIL_USER,
+                  result.email,
+                  "Confirm your e-mail!",
+                  view.parse({
+                    user: result,
+                    app: {
+                      protocol: process.env.APP_PROTOCOL,
+                      host: process.env.APP_HOST,
+                      port: process.env.APP_PORT,
+                    }
+                  }),
+                  (err) => {
+                    if(err){
+                      res({
+                        'status': 500,
+                        'response': {
+                          'error': 'email confirmation link was not sent, an error happened.'
+                        }
+                      });
+                    }
+                    res({
+                      'status': 200,
+                      'response': {
+                        'message': 'Please confirm your e-mail.'
+                      }
+                    });
                   }
-                });
+                )
               }
             });
           } else {
@@ -200,17 +229,25 @@ module.exports = class UserService {
               });
             }
         }
+        let view = new View('email', 'confirmEmailLink');
         global.mail.sendMessage(
           process.env.MAIL_USER,
           this.user.email,
           "Confirm your e-mail!",
-          "Hi, "+this.user.username+"!<br/><br/>Please click <a href='"+process.env.APP_PROTOCOL+"://"+process.env.APP_HOST+":"+process.env.APP_PORT+"/user/confirm/email/"+this.user.email_confirmation_token+"'>here</a> to confirm your e-mail.",
+          view.parse({
+            user: this.user,
+            app: {
+              protocol: process.env.APP_PROTOCOL,
+              host: process.env.APP_HOST,
+              port: process.env.APP_PORT,
+            }
+          }),
           (err) => {
             if(err){
               res({
                 'status': 500,
                 'response': {
-                  'error': 'user creation error. '+err
+                  'error': 'user creation error.'
                 }
               });
             }
@@ -322,6 +359,7 @@ module.exports = class UserService {
     return new Promise((res) => {
       User.findOneAndUpdate(
         {
+          'email_confirmed': false,
           'email_confirmation_token': token
         },
         {
@@ -361,5 +399,140 @@ module.exports = class UserService {
         }
       );
     });
+  }
+
+  /*
+    Reset user password by e-mail
+  */
+  sendResetPasswordEmail(email) {
+    return new Promise((res) => {
+      let password_reset_token = require('uuid').v4();
+      User.findOneAndUpdate(
+        {
+          'email': email
+        },
+        {
+          'password_reset_token': password_reset_token
+        },
+        {},
+        (err) => {
+          if (err) {
+            console.error(
+              `${Time.now()} - user password reset error: `
+              +
+              err
+            );
+            if(err instanceof TypeError) {
+              res({
+                'status': 400,
+                'response': {
+                  'error': 'user password reset error.'
+                }
+              });
+            } else {
+              res({
+                'status': 500,
+                'response': {
+                  'error': 'user password reset error.'
+                }
+              });
+            }
+          }
+          let token = jwt.sign({
+            'password_reset_token': password_reset_token
+          }, process.env.USER_JWT_SECRET, {
+            'expiresIn': 300
+          });
+          let view = new View('email', 'passwordResetLink');
+          global.mail.sendMessage(
+            process.env.MAIL_USER,
+            email,
+            "Reset your password!",
+            view.parse({
+              token: token,
+              app: {
+                protocol: process.env.APP_PROTOCOL,
+                host: process.env.APP_HOST,
+                port: process.env.APP_PORT,
+              }
+            }),
+            (err) => {
+              if(err){
+                res({
+                  'status': 500,
+                  'response': {
+                    'error': 'user password reset error.'
+                  }
+                });
+              }
+              res({
+                'status': 200,
+                'response': {
+                  'message': 'user password reset link sent.'
+                }
+              });
+            }
+          )
+        }
+      );
+    });
+  }
+  
+  /*
+    Reset user password by token
+  */
+  resetPassword(token, password) {
+    return new Promise((res) => {
+      jwt.verify(token, process.env.USER_JWT_SECRET, function(err, decoded) {
+        if (err) {
+          res({
+            'status': 401,
+            'response': {
+              'message': 'invalid password reset token.'
+            }
+          });
+        }
+        User.findOneAndUpdate(
+          {
+            'password_reset_token': decoded.password_reset_token,
+          },
+          {
+            'password': password,
+            'password_reset_token': ""
+          },
+          {},
+          (err) => {
+            if (err) {
+              console.error(
+                `${Time.now()} - user password reset error: `
+                +
+                err
+              );
+              if(err instanceof TypeError) {
+                res({
+                  'status': 400,
+                  'response': {
+                    'error': 'user password reset error.'
+                  }
+                });
+              } else {
+                res({
+                  'status': 500,
+                  'response': {
+                    'error': 'user password reset error.'
+                  }
+                });
+              }
+            }
+            res({
+              'status': 200,
+              'response': {
+                'message': 'user password reset completed.'
+              }
+            });
+          }
+        );
+      });
+    });
   }
 }

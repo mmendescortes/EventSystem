@@ -99,7 +99,7 @@ const router = express.Router();
 */
 router.post('/ENDPOINT_NAME', function(req, res) {
   MODEL_NAMEInstance = new MODEL__NAME_CAPITALIZEDController(req.body);
-  result = MODEL_NAMEInstance.create()
+  result = MODEL_NAMEInstance.create();
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -110,7 +110,7 @@ router.post('/ENDPOINT_NAME', function(req, res) {
   Return not allowed method
 */
 router.get('/ENDPOINT_NAME', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
       "status": 405,
@@ -123,7 +123,7 @@ router.get('/ENDPOINT_NAME', function(req, res) {
   Return not allowed method
 */
 router.delete('/ENDPOINT_NAME', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
       "status": 405,
@@ -136,7 +136,7 @@ router.delete('/ENDPOINT_NAME', function(req, res) {
   Return not allowed method
 */
 router.put('/ENDPOINT_NAME', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
         "status": 405,
@@ -149,7 +149,7 @@ router.put('/ENDPOINT_NAME', function(req, res) {
   Return not allowed method
 */
 router.post('/ENDPOINT_NAME/:id', function(req, res) {
-  res.setHeader('Allow', 'PUT, DELETE, GET')
+  res.setHeader('Allow', 'PUT, DELETE, GET');
   res.status(405);
   res.json({
       "status": 405,
@@ -163,7 +163,7 @@ router.post('/ENDPOINT_NAME/:id', function(req, res) {
 */
 router.get('/ENDPOINT_NAME/:id', function(req, res) {
   MODEL_NAMEInstance = new MODEL__NAME_CAPITALIZEDController();
-  result = MODEL_NAMEInstance.getById(req.params.id)
+  result = MODEL_NAMEInstance.getById(req.params.id);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -175,7 +175,7 @@ router.get('/ENDPOINT_NAME/:id', function(req, res) {
 */
 router.delete('/ENDPOINT_NAME/:id', function(req, res) {
   MODEL_NAMEInstance = new MODEL__NAME_CAPITALIZEDController();
-  result = MODEL_NAMEInstance.delete(req.params.id)
+  result = MODEL_NAMEInstance.delete(req.params.id);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -187,7 +187,7 @@ router.delete('/ENDPOINT_NAME/:id', function(req, res) {
 */
 router.put('/ENDPOINT_NAME/:id', function(req, res) {
   MODEL_NAMEInstance = new MODEL__NAME_CAPITALIZEDController();
-  result = MODEL_NAMEInstance.update(req.params.id, req.body)
+  result = MODEL_NAMEInstance.update(req.params.id, req.body);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -401,7 +401,7 @@ module.exports = class MODEL__NAME_CAPITALIZEDService {
     });
   }
 }`,
-controllerDefault: `/*
+    controllerDefault: `/*
 Import the MODEL_NAME service
 */
 const MODEL__NAME_CAPITALIZEDService = require('../service/MODEL_NAME');

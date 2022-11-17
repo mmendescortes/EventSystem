@@ -50,6 +50,14 @@ const schema = mongoose.Schema({
 		type: Boolean,
     default: false
 	},
+  password_reset_token: {
+    type: String
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'staff', 'user'],
+    default: 'user'
+  }
 }, {
   versionKey: 'version_key',
   timestamps: {
@@ -62,26 +70,31 @@ const schema = mongoose.Schema({
   Modify the User model before saving
 */
 schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
+  let isModifiedEmail;
   let isModifiedPassword;
   try{
-    isModifiedPassword = !this.isModified("password");
+    isModifiedPassword = this.isModified("password");
+    isModifiedEmail = this.isModified("email");
   } catch(err) {
-    if(err) isModifiedPassword = !this._update.password; this.password = !this._update.password;
+    if(err) {
+      isModifiedPassword = !!this._update.password;
+      this.password = this._update.password;
+      isModifiedEmail = !!this._update.email;
+      this.email = this._update.email;
+    }
   }
-	if(isModifiedPassword) return next();
-  let password;
-  try {
-    password = this.getUpdate().$set.password
-  } catch(err) {
-    if(err) password = this.password;
+  if(isModifiedEmail) {
+    this.email_confirmed = false;
+    this.email_confirmation_token = require('uuid').v4();
   }
+	if(!isModifiedPassword) return next();
   bcrypt.genSalt(
     // The Number() is meant to work with repl.it
 		Number(process.env.SALT_WORK_FACTOR),
 		(err, salt) => {
 			if(err) return next(err);
 			bcrypt.hash(
-        this.password.toString(),
+        this.password,
         salt,
         (err, hash) => {
 				  if(err) return next(err);

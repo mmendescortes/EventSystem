@@ -18,7 +18,7 @@ const router = express.Router();
 */
 router.post('/signin', function(req, res) {
   userInstance = new UserController(req.body);
-  result = userInstance.signin()
+  result = userInstance.signin();
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -29,7 +29,7 @@ router.post('/signin', function(req, res) {
   Return not allowed method
 */
 router.get('/signin', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
       "status": 405,
@@ -42,7 +42,7 @@ router.get('/signin', function(req, res) {
   Return not allowed method
 */
 router.delete('/signin', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
       "status": 405,
@@ -55,7 +55,7 @@ router.delete('/signin', function(req, res) {
   Return not allowed method
 */
 router.put('/signin', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
         "status": 405,
@@ -69,7 +69,7 @@ router.put('/signin', function(req, res) {
 */
 router.post('/user', function(req, res) {
   userInstance = new UserController(req.body);
-  result = userInstance.create()
+  result = userInstance.create();
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -80,7 +80,7 @@ router.post('/user', function(req, res) {
   Return not allowed method
 */
 router.get('/user', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
       "status": 405,
@@ -93,7 +93,7 @@ router.get('/user', function(req, res) {
   Return not allowed method
 */
 router.delete('/user', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
       "status": 405,
@@ -106,7 +106,7 @@ router.delete('/user', function(req, res) {
   Return not allowed method
 */
 router.put('/user', function(req, res) {
-  res.setHeader('Allow', 'POST')
+  res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
         "status": 405,
@@ -119,7 +119,7 @@ router.put('/user', function(req, res) {
   Return not allowed method
 */
 router.post('/user/:id', function(req, res) {
-  res.setHeader('Allow', 'PUT, DELETE, GET')
+  res.setHeader('Allow', 'PUT, DELETE, GET');
   res.status(405);
   res.json({
       "status": 405,
@@ -133,7 +133,7 @@ router.post('/user/:id', function(req, res) {
 */
 router.get('/user/:id', function(req, res) {
   userInstance = new UserController();
-  result = userInstance.getById(req.params.id)
+  result = userInstance.getById(req.params.id);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -145,7 +145,7 @@ router.get('/user/:id', function(req, res) {
 */
 router.delete('/user/:id', function(req, res) {
   userInstance = new UserController();
-  result = userInstance.delete(req.params.id)
+  result = userInstance.delete(req.params.id);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -157,7 +157,7 @@ router.delete('/user/:id', function(req, res) {
 */
 router.put('/user/:id', function(req, res) {
   userInstance = new UserController();
-  result = userInstance.update(req.params.id, req.body)
+  result = userInstance.update(req.params.id, req.body);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
@@ -168,7 +168,7 @@ router.put('/user/:id', function(req, res) {
   Return not allowed method
 */
 router.post('/user/confirm/email/:token', function(req, res) {
-  res.setHeader('Allow', 'PUT, GET')
+  res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
       "status": 405,
@@ -181,15 +181,20 @@ router.post('/user/confirm/email/:token', function(req, res) {
   Return not allowed method
 */
 router.get('/user/confirm/email/:token', function(req, res) {
-  res.status(200);
-  res.send("");
+  res.setHeader('Allow', 'PUT');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'PUT, GET'
+  });
 });
 
 /*
   Return not allowed method
 */
 router.delete('/user/confirm/email/:token', function(req, res) {
-  res.setHeader('Allow', 'PUT, GET')
+  res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
       "status": 405,
@@ -203,11 +208,113 @@ router.delete('/user/confirm/email/:token', function(req, res) {
 */
 router.put('/user/confirm/email/:token', function(req, res) {
   userInstance = new UserController();
-  result = userInstance.confirmEmail(req.params.token)
+  result = userInstance.confirmEmail(req.params.token);
   result.then((result)=>{
     res.status(result.status);
     res.json(result.response);
   }); 
+});
+
+/*
+  Return not allowed method
+*/
+router.post('/user/reset/password/:token', function(req, res) {
+  res.setHeader('Allow', 'PUT');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'PUT'
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.get('/user/reset/password/:token', function(req, res) {
+  res.setHeader('Allow', 'PUT');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'PUT'
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.delete('/user/reset/password/:token', function(req, res) {
+  res.setHeader('Allow', 'PUT');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'PUT'
+  });
+});
+
+/*
+  Reset user's password
+*/
+router.put('/user/reset/password/:token', function(req, res) {
+  userInstance = new UserController();
+  result = userInstance.resetPassword(req.params.token, req.body.password);
+  result.then((result)=>{
+    res.status(result.status);
+    res.json(result.response);
+  }); 
+});
+
+/*
+  Send password reset link to user's e-mail
+*/
+router.post('/user/reset/password', function(req, res) {
+  userInstance = new UserController();
+  result = userInstance.sendResetPasswordEmail(req.body.email);
+  result.then((result)=>{
+    res.status(result.status);
+    res.json(result.response);
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.get('/user/reset/password', function(req, res) {
+  res.setHeader('Allow', 'POST');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'POST'
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.delete('/user/reset/password', function(req, res) {
+  res.setHeader('Allow', 'POST');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'POST'
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.put('/user/reset/password', function(req, res) {
+  res.setHeader('Allow', 'POST');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'POST'
+  });
 });
 
 /*
