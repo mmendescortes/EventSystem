@@ -1,4 +1,9 @@
   /*
+    Import the Express library
+  */
+  import {Express} from 'express';
+
+  /*
     Init the Environment Variables module
   */
   import './environment';
@@ -42,7 +47,7 @@ export default (() => {
   /*
     Init the HTTP/HTTPS module
   */
-  const library = Library;
+  const library : Express = Library;
   
   /*
     Init the Body module

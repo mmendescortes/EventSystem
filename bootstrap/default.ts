@@ -1,7 +1,15 @@
 /*
     Create the Framework defaults
 */
-export default {
+
+interface Default {
+  modelDefault : string;
+  routeDefault : string;
+  serviceDefault : string;
+  controllerDefault : string;
+}
+
+const sample : Default = {
     modelDefault: `/*
     Import the Mongoose library
 */
@@ -69,7 +77,7 @@ import {MODEL__NAME_CAPITALIZEDController} from '../../controller/MODEL_NAME';
 /*
     Import the Express library
 */
-const express = require('express');
+import express, { Express, Request, Response } from 'express';
 
 /*
   Create a new router for MODEL__NAME_CAPITALIZED
@@ -441,3 +449,5 @@ export class MODEL__NAME_CAPITALIZEDController {
     }
 }`
 }
+
+export default sample;

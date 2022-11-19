@@ -1,3 +1,8 @@
+/*
+  Import the Dotenv library
+*/
+import {config} from "dotenv";
+
 export default (() => {
-  return require('dotenv').config()
+  return config();
 })();

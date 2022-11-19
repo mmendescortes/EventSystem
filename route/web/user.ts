@@ -6,7 +6,7 @@ import {UserController} from '../../controller/user';
 /*
     Import the Express library
 */
-const express = require('express');
+import express, { Express, Request, Response } from 'express';
 
 /*
   Create a new router for User

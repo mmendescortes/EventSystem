@@ -3,21 +3,26 @@
 */
 import {FileSystem} from '../utils/filesystem';
 
-export default ((app) => {
+/*
+  Import the Express library
+*/
+import {Express} from 'express';
+
+export default ((app : Express) => {
   /*
     Instantiate the FileSystem class to route/web
   */
-  const web = new FileSystem('../route/web');
+  const web : FileSystem = new FileSystem('../route/web');
   
   /*
     Instantiate the FileSystem class to route/api
   */
-  const api = new FileSystem('../route/api');
+  const api : FileSystem = new FileSystem('../route/api');
   
   /*
     Load route/web routes
   */
-  web.dir((file) => {
+  web.dir((file : File) => {
     if(file.length){
       app.use(require(web.get() + "/" + file));
     }
@@ -27,7 +32,7 @@ export default ((app) => {
   /*
     Load route/api routes
   */
-  api.dir((file) => {
+  api.dir((file : File) => {
     if(file.length) {
       app.use(`/api/${process.env.API_VERSION}`, require(api.get() + "/" + file));
     }
