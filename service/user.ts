@@ -4,6 +4,11 @@
 import {default as User} from '../model/user';
 
 /*
+  Import the Mongoose library
+*/
+import {Document} from 'mongoose';
+
+/*
   Import the Time utility
 */
 import {Time} from '../utils/time';
@@ -32,7 +37,8 @@ import {v4} from 'uuid';
   Export the User class
 */
 export class UserService {
-  constructor(user = null) {
+  user : any;
+  constructor(user : any = null) {
     /*
       Set the user as this.user
     */
@@ -42,9 +48,9 @@ export class UserService {
   /*
     Return an item from User by given id
   */
-  signin() {
-    return new Promise((res) => {
-      let user = this.user
+  signin() : Promise<unknown> {
+    return new Promise((res : any) => {
+      let user : any = this.user
       User.findOne(
         {
           '$or': [
@@ -55,7 +61,7 @@ export class UserService {
             }
           ]
         },
-        (err, result) => {
+        (err : any, result : any) => {
           if (err) {
             console.error(
               `${Time.now()} - user get error: `
@@ -79,7 +85,7 @@ export class UserService {
             }
           }
           if(result) {
-            result.comparePassword(user.password, (err, r)=>{
+            result.comparePassword(user.password, (err : Error, r : any)=>{
               if(err) {
                 console.error(
                   `${Time.now()} - user match error: `
@@ -102,7 +108,7 @@ export class UserService {
                 });
               }
               if(result.email_confirmed) {
-                const token = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
+                const token : string = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
                   expiresIn: 300
                 });
                 res({
@@ -110,7 +116,7 @@ export class UserService {
                   'response': token
                 });
               } else {
-                let view = new View('email', 'confirmEmailLink');
+                let view : View = new View('email', 'confirmEmailLink');
                 global.mail.sendMessage(
                   process.env.MAIL_USER,
                   result.email,
@@ -123,7 +129,7 @@ export class UserService {
                       port: process.env.APP_PORT,
                     }
                   }),
-                  (err) => {
+                  (err : Error) => {
                     if(err){
                       res({
                         'status': 500,
@@ -158,13 +164,13 @@ export class UserService {
   /*
     Return an item from User by given id
   */
-  getById(id) {
-    return new Promise((res) => {
+  getById(id : string) : Promise<unknown> {
+    return new Promise((res : any) => {
       User.findOne(
         {
           '_id': new ObjectId(id)
         },
-        (err, result) => {
+        (err : any, result : any) => {
           if (err) {
             console.error(
               `${Time.now()} - user get error: `
@@ -199,11 +205,11 @@ export class UserService {
   /*
     Create an item from User by the user passed on the constructor
   */
-  create() {
+  create() : Promise<unknown> {
     this.user.email_confirmation_token = v4();
-    let user = new User(this.user);
-    return new Promise((res) => {
-      user.save((err) => {
+    let user : Document = new User(this.user);
+    return new Promise((res : any) => {
+      user.save((err : any) => {
         if (err) {
           if (err.code === 11000) {
             res({
@@ -234,7 +240,7 @@ export class UserService {
               });
             }
         }
-        let view = new View('email', 'confirmEmailLink');
+        let view : View = new View('email', 'confirmEmailLink');
         global.mail.sendMessage(
           process.env.MAIL_USER,
           this.user.email,
@@ -247,7 +253,7 @@ export class UserService {
               port: process.env.APP_PORT,
             }
           }),
-          (err) => {
+          (err : Error) => {
             if(err){
               res({
                 'status': 500,
@@ -271,15 +277,15 @@ export class UserService {
   /*
     Update an item from user by the user passed on the constructor
   */
-  update(id, fields) {
-    return new Promise((res) => {
+  update(id : string, fields : any) : Promise<unknown> {
+    return new Promise((res : any) => {
       User.findOneAndUpdate(
         {
           '_id': new ObjectId(id)
         },
         fields,
         {},
-        (err) => {
+        (err : any) => {
           if (err) {
             console.error(
               `${Time.now()} - user update error: `
@@ -316,14 +322,14 @@ export class UserService {
   /*
     Delete an item from user by the user passed on the constructor
   */
-  delete(id) {
-    return new Promise((res) => {
+  delete(id : string) : Promise<unknown> {
+    return new Promise((res : any) => {
       User.findOneAndDelete(
         {
           '_id': new ObjectId(id)
         },
         {},
-        (err) => {
+        (err : any) => {
           if (err) {
             console.error(
               `${Time.now()} - user delete error: `
@@ -360,8 +366,8 @@ export class UserService {
   /*
     Confirm user e-mail by the token given on parameter
   */
-  confirmEmail(token) {
-    return new Promise((res) => {
+  confirmEmail(token : string) : Promise<unknown> {
+    return new Promise((res : any) => {
       User.findOneAndUpdate(
         {
           'email_confirmed': false,
@@ -372,7 +378,7 @@ export class UserService {
           'email_confirmation_token': ""
         },
         {},
-        (err) => {
+        (err : any) => {
           if (err) {
             console.error(
               `${Time.now()} - e-mail confirmation error: `
@@ -409,8 +415,8 @@ export class UserService {
   /*
     Reset user password by e-mail
   */
-  sendResetPasswordEmail(email) {
-    return new Promise((res) => {
+  sendResetPasswordEmail(email : string) : Promise<unknown> {
+    return new Promise((res : any) => {
       let password_reset_token = v4();
       User.findOneAndUpdate(
         {
@@ -420,7 +426,7 @@ export class UserService {
           'password_reset_token': password_reset_token
         },
         {},
-        (err) => {
+        (err : any) => {
           if (err) {
             console.error(
               `${Time.now()} - user password reset error: `
@@ -443,12 +449,12 @@ export class UserService {
               });
             }
           }
-          let token = jwt.sign({
+          let token : string = jwt.sign({
             'password_reset_token': password_reset_token
           }, process.env.USER_JWT_SECRET, {
             'expiresIn': 300
           });
-          let view = new View('email', 'passwordResetLink');
+          let view : View = new View('email', 'passwordResetLink');
           global.mail.sendMessage(
             process.env.MAIL_USER,
             email,
@@ -461,7 +467,7 @@ export class UserService {
                 port: process.env.APP_PORT,
               }
             }),
-            (err) => {
+            (err : Error) => {
               if(err){
                 res({
                   'status': 500,
@@ -486,9 +492,9 @@ export class UserService {
   /*
     Reset user password by token
   */
-  resetPassword(token, password) {
-    return new Promise((res) => {
-      jwt.verify(token, process.env.USER_JWT_SECRET, function(err, decoded) {
+  resetPassword(token : string, password : string) : Promise<unknown> {
+    return new Promise((res : any) => {
+      jwt.verify(token, process.env.USER_JWT_SECRET, function(err : Error, decoded : any) {
         if (err) {
           res({
             'status': 401,
@@ -506,7 +512,7 @@ export class UserService {
             'password_reset_token': ""
           },
           {},
-          (err) => {
+          (err : any) => {
             if (err) {
               console.error(
                 `${Time.now()} - user password reset error: `

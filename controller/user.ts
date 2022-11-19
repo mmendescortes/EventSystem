@@ -36,7 +36,7 @@ export class UserController {
     /*
     Create an item from user by the user passed on the constructor
     */
-    create() {
+    create() : Promise<unknown> {
         let userInstance : UserService = new UserService(this.user);
         let result : Promise<unknown> = userInstance.create();
         return result;
