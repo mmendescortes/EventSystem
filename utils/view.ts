@@ -1,26 +1,27 @@
 /*
   Import the Pug library
 */
-import {pug as engine} from 'pug';
+import * as engine from 'pug';
 
 /*
   Import the Path library
 */
-import {path} from 'path';
+const path = require('path');
 
 /*
   Export the View utility
 */
 export class View {
-  constructor(type, template) {
+  template: string;
+  constructor(type : string, template : string) {
     this.template = path.join(__dirname, '../view', type, template + '.pug');
   }
 
   /*
     Send new message from Mail instance
   */
-  parse(data) {
-    const view = engine.compileFile(this.template);
+  parse(data : string) {
+    const view : engine = engine.compileFile(this.template);
     return view(data);
   }
 }
