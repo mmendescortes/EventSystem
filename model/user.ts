@@ -1,7 +1,7 @@
 /*
   Import the Mongoose library
 */
-import {mongoose} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 
 /*
   Import the Bcrypt library
@@ -26,35 +26,35 @@ import {v4} from 'uuid';
 /*
   Create the User schema
 */
-const schema = mongoose.Schema({
-	username: {
-		type: String,
-		required: 'Username is required.',
+const schema : Schema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: 'Username is required.',
     maxLength: 100
-	},
-	email: {
-		type: String,
-		trim: true,
-		lowercase: true,
-		unique: true,
-		required: 'Email address is required.',
-		match: [
-			/^.+@(?:[\w-]+\.)+\w+$/,
-			'Please fill a valid email address.'
-		],
+  },
+  email: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    unique: true,
+    required: 'Email address is required.',
+    match: [
+      /^.+@(?:[\w-]+\.)+\w+$/,
+      'Please fill a valid email address.'
+    ],
     maxLength: 191
-	},
-	password: {
-		type: String,
-		required: 'Password is required.'
-	},
+  },
+  password: {
+    type: String,
+    required: 'Password is required.'
+  },
   email_confirmation_token: {
     type: String
   },
-	email_confirmed: {
-		type: Boolean,
+  email_confirmed: {
+    type: Boolean,
     default: false
-	},
+  },
   password_reset_token: {
     type: String
   },
@@ -68,7 +68,7 @@ const schema = mongoose.Schema({
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
-  }, 
+  },
 });
 
 /*

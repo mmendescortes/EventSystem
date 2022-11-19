@@ -4,36 +4,32 @@ Import the user service
 import {UserService} from '../service/user';
 
 /*
-Import the Time utility
-*/
-import {Time} from '../utils/time';
-
-/*
 Export the UserController class
 */
 export class UserController {
-    constructor(user = null) {
-    /*
-    Set the user as this.user
-    */
-    this.user = user;
+    user : any;
+    constructor(user : any = null) {
+        /*
+        Set the user as this.user
+        */
+        this.user = user;
     }
 
     /*
     Return an item from user by given id
     */
-    signin() {
-        let userInstance = new UserService(this.user);
-        let result = userInstance.signin();
+    signin() : Promise<unknown> {
+        let userInstance : UserService = new UserService(this.user);
+        let result : Promise<unknown> = userInstance.signin();
         return result;
     }
   
     /*
     Return an item from user by given id
     */
-    getById(id) {
-        let userInstance = new UserService();
-        let result = userInstance.getById(id);
+    getById(id : string) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.getById(id);
         return result;
     }
 
@@ -41,53 +37,53 @@ export class UserController {
     Create an item from user by the user passed on the constructor
     */
     create() {
-        let userInstance = new UserService(this.user);
-        let result = userInstance.create();
+        let userInstance : UserService = new UserService(this.user);
+        let result : Promise<unknown> = userInstance.create();
         return result;
     }
 
     /*
     Update an item from user by the user passed on the constructor
     */
-    update(id, fields) {
-        let userInstance = new UserService();
-        let result = userInstance.update(id, fields);
+    update(id : string, fields : object) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.update(id, fields);
         return result;
     }
 
     /*
     Delete an item from user by the user passed on the constructor
     */
-    delete(id) {
-        let userInstance = new UserService();
-        let result = userInstance.delete(id);
+    delete(id : string) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.delete(id);
         return result;
     }
 
   /*
     Confirm user e-mail by the token given on parameter
   */
-    confirmEmail(token) {
-        let userInstance = new UserService();
-        let result = userInstance.confirmEmail(token);
+    confirmEmail(token : string) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.confirmEmail(token);
         return result;
     }
 
     /*
       Reset user password by e-mail
     */
-    sendResetPasswordEmail(email) {
-        let userInstance = new UserService();
-        let result = userInstance.sendResetPasswordEmail(email);
+    sendResetPasswordEmail(email : string) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.sendResetPasswordEmail(email);
         return result;
     }
   
     /*
       Reset user password by token
     */
-    resetPassword(token, password) {
-        let userInstance = new UserService();
-        let result = userInstance.resetPassword(token, password);
+    resetPassword(token : string, password : string) : Promise<unknown> {
+        let userInstance : UserService = new UserService();
+        let result : Promise<unknown> = userInstance.resetPassword(token, password);
         return result;
     }
 }

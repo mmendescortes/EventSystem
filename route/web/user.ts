@@ -6,20 +6,20 @@ import {UserController} from '../../controller/user';
 /*
     Import the Express library
 */
-import express, { Express, Request, Response } from 'express';
+import express, {Express, Request, Response, Router} from 'express';
 
 /*
   Create a new router for User
 */
-const router = express.Router();
+const router : Router = express.Router();
 
 /*
   Create User
 */
 router.post('/signin', function(req, res) {
-  userInstance = new UserController(req.body);
-  result = userInstance.signin()
-  result.then((result)=>{
+  let userInstance : UserController = new UserController(req.body);
+  let result : Promise<unknown> = userInstance.signin()
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   });
@@ -68,9 +68,9 @@ router.put('/signin', function(req, res) {
   Create User
 */
 router.post('/user', function(req, res) {
-  userInstance = new UserController(req.body);
-  result = userInstance.create()
-  result.then((result)=>{
+  let userInstance : UserController = new UserController(req.body);
+  let result : Promise<unknown> = userInstance.create()
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   });
@@ -132,9 +132,9 @@ router.post('/user/:id', function(req, res) {
   List User
 */
 router.get('/user/:id', function(req, res) {
-  userInstance = new UserController();
-  result = userInstance.getById(req.params.id)
-  result.then((result)=>{
+  let userInstance : UserController = new UserController();
+  let result : Promise<unknown> = userInstance.getById(req.params.id)
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   });
@@ -144,9 +144,9 @@ router.get('/user/:id', function(req, res) {
   Delete User
 */
 router.delete('/user/:id', function(req, res) {
-  userInstance = new UserController();
-  result = userInstance.delete(req.params.id)
-  result.then((result)=>{
+  let userInstance : UserController = new UserController();
+  let result : Promise<unknown> = userInstance.delete(req.params.id)
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   });
@@ -156,9 +156,9 @@ router.delete('/user/:id', function(req, res) {
   Update User
 */
 router.put('/user/:id', function(req, res) {
-  userInstance = new UserController();
-  result = userInstance.update(req.params.id, req.body)
-  result.then((result)=>{
+  let userInstance : UserController = new UserController();
+  let result : Promise<unknown> = userInstance.update(req.params.id, req.body)
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   });    
@@ -202,9 +202,9 @@ router.delete('/user/confirm/email/:token', function(req, res) {
   Confirm user's e-mail
 */
 router.put('/user/confirm/email/:token', function(req, res) {
-  userInstance = new UserController();
-  result = userInstance.confirmEmail(req.params.token)
-  result.then((result)=>{
+  let userInstance : UserController = new UserController();
+  let result : Promise<unknown> = userInstance.confirmEmail(req.params.token)
+  result.then((result : any)=>{
     res.status(result.status);
     res.send("");
   }); 
