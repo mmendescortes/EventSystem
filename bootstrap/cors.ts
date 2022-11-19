@@ -1,14 +1,14 @@
 /*
   Import the Express library
 */
-import {Express} from 'express';
+import {Express, Request} from 'express';
 
 /*
   Import the CORS library
 */
-import {cors} from 'cors';
+import cors from 'cors';
 
-export default ((app : Express) => {
-  app.use(cors());
-  app.options('/api/*', cors());
+export default ((app: Express) => {
+  app.use(cors<Request>());
+  app.options('/api/*', cors<Request>());
 });
