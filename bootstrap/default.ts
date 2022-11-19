@@ -55,24 +55,6 @@ schema.post('findOneAndUpdate', function(model) {
       }
     });
   })
-  Object.keys(incrementedFields).forEach((field) => {
-    const history = new History({
-      collection_name: 'MODEL__NAME_CAPITALIZED',
-      collection_field: field,
-      old_value: model[field],
-      new_value: model[field]+incrementedFields[field],
-      object_id: model["_id"]
-    });
-    history.save((err) => {
-      if (err) {
-        console.error(
-          \`\${Time.now()} - History creation error: \`
-          +
-          err
-        );
-      }
-    });
-  })
 });
 
 /*
