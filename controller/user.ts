@@ -1,17 +1,17 @@
 /*
 Import the user service
 */
-const UserService = require('../service/user');
+import {UserService} from '../service/user';
 
 /*
 Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
 Export the UserController class
 */
-module.exports = class UserController {
+export class UserController {
     constructor(user = null) {
     /*
     Set the user as this.user

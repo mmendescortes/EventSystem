@@ -11,7 +11,7 @@ const path = require('path');
 /*
   Export the File System utility
 */
-module.exports = class FileSystem {
+export class FileSystem {
   constructor(dir) {
     /*
       Set the date as this.date

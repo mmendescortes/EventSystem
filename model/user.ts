@@ -1,22 +1,27 @@
 /*
   Import the Mongoose library
 */
-const mongoose = require('mongoose');
+import {mongoose} from 'mongoose';
 
 /*
   Import the Bcrypt library
 */
-const bcrypt = require('bcryptjs');
+import {bcrypt} from 'bcryptjs';
 
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Import the History model
 */
-const History = require('../model/history');
+import {default as History} from '../model/history';
+
+/*
+  Import the UUID library
+*/
+import {v4} from 'uuid';
 
 /*
   Create the User schema
@@ -85,7 +90,7 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
   }
   if(isModifiedEmail) {
     this.email_confirmed = false;
-    this.email_confirmation_token = require('uuid').v4();
+    this.email_confirmation_token = v4();
   }
 	if(!isModifiedPassword) return next();
   bcrypt.genSalt(
@@ -153,4 +158,4 @@ schema.methods.comparePassword = function(password, callback) {
 /*
   Export the User model
 */
-module.exports = mongoose.model('User', schema);
+export default mongoose.model('User', schema);

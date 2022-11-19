@@ -1,17 +1,17 @@
 /*
   Import the Pug library
 */
-var engine = require('pug');
+import {pug as engine} from 'pug';
 
 /*
   Import the Path library
 */
-const path = require('path');
+import {path} from 'path';
 
 /*
   Export the View utility
 */
-module.exports = class View {
+export class View {
   constructor(type, template) {
     this.template = path.join(__dirname, '../view', type, template + '.pug');
   }

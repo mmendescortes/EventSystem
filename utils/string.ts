@@ -1,7 +1,7 @@
 /*
   Export the String utility
 */
-module.exports = class String {
+export class String {
   /*
     Return a capitalized version of given string
   */

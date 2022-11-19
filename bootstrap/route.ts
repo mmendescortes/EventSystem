@@ -1,9 +1,9 @@
-module.exports = ((app) => {
-  /*
-    Import the File System utility
-  */
-  const FileSystem = require('../utils/filesystem');
-  
+/*
+  Import the File System utility
+*/
+import {FileSystem} from '../utils/filesystem';
+
+export default ((app) => {
   /*
     Instantiate the FileSystem class to route/web
   */

@@ -1,39 +1,63 @@
-module.exports = (() => {
-  
   /*
     Init the Environment Variables module
   */
-  require('./environment');
+  import './environment';
   
   /*
     Init the Database module
   */
-  require('./database');
+  import './database';
 
   /*
     Init the Mail module
   */
-  global.mail = require('./mail');
+  import {default as Mail} from './mail';
   
   /*
     Init the HTTP/HTTPS module
   */
-  const library = require('./library');
+  import {default as Library} from './library';
   
   /*
     Init the Body module
   */
-  require('./body')(library);
+  import {default as Body} from './body';
   
   /*
     Init the CORS module
   */
-  require('./cors')(library);
+  import {default as CORS} from './cors';
   
   /*
     Init the Route module
   */
-  require('./route')(library);
+  import {default as Route} from './route';
+
+export default (() => {
+  /*
+    Init the Mail module
+  */
+  global.mail = Mail;
+  
+  /*
+    Init the HTTP/HTTPS module
+  */
+  const library = Library;
+  
+  /*
+    Init the Body module
+  */
+  Body(library);
+  
+  /*
+    Init the CORS module
+  */
+  CORS(library);
+  
+  /*
+    Init the Route module
+  */
+  Route(library);
 
   return library;
 })();

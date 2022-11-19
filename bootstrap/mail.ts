@@ -1,5 +1,5 @@
-module.exports = (() => {
-  const Mail = require('../utils/mail')
+import {Mail} from '../utils/mail';
+export default (() => {
   return new Mail(
     process.env.MAIL_HOSTNAME,
     process.env.MAIL_PORT,

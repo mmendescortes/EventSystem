@@ -1,7 +1,7 @@
 /*
 Import the user controller
 */
-const UserController = require('../../controller/user');
+import {UserController} from '../../controller/user';
 
 /*
     Import the Express library

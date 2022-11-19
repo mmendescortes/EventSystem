@@ -1,32 +1,37 @@
 /*
     Import the user model
 */
-const User = require('../model/user');
+import {default as User} from '../model/user';
 
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Import the View utility
 */
-const View = require('../utils/view');
+import {View} from '../utils/view';
 
 /*
   Import the ObjectId type from Mongoose library
 */
-const ObjectId = require('mongoose').Types.ObjectId;
+import {ObjectId} from 'bson';
 
 /*
   Import the JWT library
 */
-const jwt = require('jsonwebtoken');
+import {jwt} from 'jsonwebtoken';
+
+/*
+  Import the UUID library
+*/
+import {v4} from 'uuid';
 
 /*
   Export the User class
 */
-module.exports = class UserService {
+export class UserService {
   constructor(user = null) {
     /*
       Set the user as this.user
@@ -195,7 +200,7 @@ module.exports = class UserService {
     Create an item from User by the user passed on the constructor
   */
   create() {
-    this.user.email_confirmation_token = require('uuid').v4();
+    this.user.email_confirmation_token = v4();
     let user = new User(this.user);
     return new Promise((res) => {
       user.save((err) => {
@@ -406,7 +411,7 @@ module.exports = class UserService {
   */
   sendResetPasswordEmail(email) {
     return new Promise((res) => {
-      let password_reset_token = require('uuid').v4();
+      let password_reset_token = v4();
       User.findOneAndUpdate(
         {
           'email': email

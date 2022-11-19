@@ -1,7 +1,7 @@
 /*
   Export the Time utility
 */
-module.exports = class Time {
+export class Time {
   constructor(date = null) {
     /*
       Set the date as this.date

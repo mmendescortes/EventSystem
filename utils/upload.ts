@@ -1,18 +1,19 @@
-module.exports = class upload {
+import {fs} from 'fs';
+import {v4} from 'uuid';
+import {multer} from 'multer';
+export class upload {
     constructor(dataFolder = 'uploads', allowedExtensions = '', maxFileSize = 200) {
-        const fs = require('fs');
-        const uuid = require('uuid').v4;
-        this.upload = require('multer');
+        this.upload = multer;
         this.storage = this.upload.diskStorage({
             destination: function(req, file, cb) {
-                let path = dataFolder + '/' + uuid() + '/' + uuid() + '/';
+                let path = dataFolder + '/' + v4() + '/' + v4() + '/';
                 fs.mkdirSync(path, {
                     recursive: true
                 })
                 cb(null, path);
             },
             filename: function(req, file, cb) {
-                cb(null, uuid() + file.originalname.match(/\.[0-9A-z]+$/g)[0]);
+                cb(null, v4() + file.originalname.match(/\.[0-9A-z]+$/g)[0]);
             }
         })
         this.filter = function(req, file, callback) {

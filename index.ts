@@ -1,4 +1,3 @@
-module.exports = (()=>{
-  const library = require("./bootstrap/init");
-  require("./bootstrap/serve")(library);
-})();
+import {default as library} from "./bootstrap/init";
+import {default as serve} from "./bootstrap/serve";
+serve(library);

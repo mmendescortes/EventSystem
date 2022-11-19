@@ -1,12 +1,12 @@
 /*
   Import the Mongoose library
 */
-const mongoose = require('mongoose');
+import {mongoose} from 'mongoose';
 
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Create the History schema
@@ -42,4 +42,4 @@ const schema = mongoose.Schema({
 /*
   Export the History model
 */
-module.exports = mongoose.model('History', schema, 'history');
+export default mongoose.model('History', schema, 'history');

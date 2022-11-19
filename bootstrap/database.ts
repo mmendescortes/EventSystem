@@ -1,4 +1,4 @@
-module.exports = (() => {
-  const Database = require('../utils/database')
+import {Database} from '../utils/database';
+export default (() => {
   new Database();
 })();

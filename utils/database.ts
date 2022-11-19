@@ -1,17 +1,17 @@
 /*
   Import the Mongoose library
 */
-const mongoose = require('mongoose');
+import {mongoose} from 'mongoose';
     
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Export the Database utility
 */
-module.exports = class Database {
+export class Database {
   constructor() { 
     /*
       Assing the MongoDB connection string

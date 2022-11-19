@@ -1,21 +1,21 @@
 /*
     Create the Framework defaults
 */
-module.exports = {
+export default {
     modelDefault: `/*
     Import the Mongoose library
 */
-const mongoose = require('mongoose');
+import {mongoose} from 'mongoose';
 
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Import the History model
 */
-const History = require('../model/history');
+import {History} from '../model/history';
 
 /*
   Create the MODEL__NAME_CAPITALIZED schema
@@ -60,11 +60,11 @@ schema.post('findOneAndUpdate', function(model) {
 /*
   Export the MODEL__NAME_CAPITALIZED model
 */
-module.exports = mongoose.model('MODEL__NAME_CAPITALIZED', schema);`,
+export default mongoose.model('MODEL__NAME_CAPITALIZED', schema);`,
     routeDefault: `/*
 Import the MODEL_NAME controller
 */
-const MODEL__NAME_CAPITALIZEDController = require('../../controller/MODEL_NAME');
+import {MODEL__NAME_CAPITALIZEDController} from '../../controller/MODEL_NAME';
 
 /*
     Import the Express library
@@ -183,22 +183,22 @@ module.exports = router;`,
     serviceDefault: `/*
     Import the MODEL_NAME model
 */
-const MODEL__NAME_CAPITALIZED = require('../model/MODEL_NAME');
+import {default as MODEL__NAME_CAPITALIZED} from '../model/MODEL_NAME';
 
 /*
   Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
   Import the ObjectId type from Mongoose library
 */
-const ObjectId = require('mongoose').Types.ObjectId;
+import {ObjectId} from 'bson';
 
 /*
   Export the MODEL__NAME_CAPITALIZED class
 */
-module.exports = class MODEL__NAME_CAPITALIZEDService {
+export class MODEL__NAME_CAPITALIZEDService {
   constructor(MODEL_NAME = null) {
     /*
       Set the MODEL_NAME as this.MODEL_NAME
@@ -386,17 +386,17 @@ module.exports = class MODEL__NAME_CAPITALIZEDService {
     controllerDefault: `/*
 Import the MODEL_NAME service
 */
-const MODEL__NAME_CAPITALIZEDService = require('../service/MODEL_NAME');
+import {MODEL__NAME_CAPITALIZEDService} from '../service/MODEL_NAME';
 
 /*
 Import the Time utility
 */
-const Time = require('../utils/time');
+import {Time} from '../utils/time';
 
 /*
 Export the MODEL__NAME_CAPITALIZEDController class
 */
-module.exports = class MODEL__NAME_CAPITALIZEDController {
+export class MODEL__NAME_CAPITALIZEDController {
     constructor(MODEL_NAME = null) {
     /*
     Set the MODEL_NAME as this.MODEL_NAME

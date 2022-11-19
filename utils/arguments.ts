@@ -1,7 +1,7 @@
 /*
   Export the CLI Arguments utility
 */
-module.exports = class Arguments {
+export class Arguments {
   /*
     Return the cli arguments
   */
