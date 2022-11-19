@@ -1,17 +1,12 @@
 /*
   Import the Mongoose library
 */
-import {mongoose} from 'mongoose';
-
-/*
-  Import the Time utility
-*/
-import {Time} from '../utils/time';
+import mongoose, {Schema} from 'mongoose';
 
 /*
   Create the History schema
 */
-const schema = mongoose.Schema({
+const schema : Schema = new mongoose.Schema({
 	collection_name: {
 		type: String,
 		required: 'Collection name is required.'
