@@ -20,7 +20,7 @@ export class View {
   /*
     Send new message from Mail instance
   */
-  parse(data : LocalsObject) : string{
+  parse(data : LocalsObject = {}) : string{
     const view : compileTemplate = compileFile(this.template);
     return view(data);
   }

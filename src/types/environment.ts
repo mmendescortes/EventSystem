@@ -4,6 +4,7 @@ declare global {
             APP_PROTOCOL : string;
             APP_HOST : string;
             APP_PORT : number;
+            APP_EMAIL: string;
             API_VERSION : string;
             MONGODB_CONNECTION_STRING : string;
             SALT_WORK_FACTOR : number;

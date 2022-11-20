@@ -127,6 +127,7 @@ export class UserService {
                       protocol: process.env.APP_PROTOCOL,
                       host: process.env.APP_HOST,
                       port: process.env.APP_PORT,
+                      email: process.env.APP_EMAIL,
                     }
                   }),
                   (err : Error) => {
@@ -251,6 +252,7 @@ export class UserService {
               protocol: process.env.APP_PROTOCOL,
               host: process.env.APP_HOST,
               port: process.env.APP_PORT,
+              email: process.env.APP_EMAIL,
             }
           }),
           (err : Error) => {
@@ -460,6 +462,7 @@ export class UserService {
             email,
             "Reset your password!",
             view.parse({
+              email: email,
               token: token,
               app: {
                 protocol: process.env.APP_PROTOCOL,

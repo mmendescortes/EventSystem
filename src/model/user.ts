@@ -30,10 +30,12 @@ import {v4} from 'uuid';
 */
 const schema : Schema = new mongoose.Schema({
   // @ts-expect-error
+  name: {
+    type: String,
+  },
+  // @ts-expect-error
   username: {
     type: String,
-    required: 'Username is required.',
-    maxLength: 100
   },
   // @ts-expect-error
   email: {
@@ -46,7 +48,6 @@ const schema : Schema = new mongoose.Schema({
       /^.+@(?:[\w-]+\.)+\w+$/,
       'Please fill a valid email address.'
     ],
-    maxLength: 191
   },
   // @ts-expect-error
   password: {
@@ -83,7 +84,7 @@ const schema : Schema = new mongoose.Schema({
 /*
   Modify the User model before saving
 */
-schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
+schema.pre(/^(updateOne|findOneAndUpdate)/, function(next : any) {
   let isModifiedEmail : boolean;
   let isModifiedPassword : boolean;
   try {
@@ -115,13 +116,13 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
   bcrypt.genSalt(
     // The Number() is meant to work with repl.it
     Number(process.env.SALT_WORK_FACTOR),
-    (err, salt) => {
+    (err : any, salt : any) => {
       if (err) return next(err);
       bcrypt.hash(
         // @ts-expect-error
         this.password,
         salt,
-        (err, hash) => {
+        (err : any, hash : string) => {
           if (err) return next(err);
           try {
             // @ts-expect-error
@@ -137,10 +138,33 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
   );
 });
 
+schema.pre('save', function(next : any) {
+  bcrypt.genSalt(
+    // The Number() is meant to work with repl.it
+    Number(process.env.SALT_WORK_FACTOR),
+    (err : any, salt : any) => {
+      if (err) return next(err);
+      bcrypt.hash(
+        this.password,
+        salt,
+        (err : any, hash : string) => {
+          if (err) return next(err);
+          try {
+            this._update.password = hash;
+          } catch (err) {
+            if (err) this.password = hash;
+          }
+          next();
+        }
+      );
+    }
+  );
+});
+
 /*
   Add the change to history after updating
 */
-schema.post('findOneAndUpdate', function(model) {
+schema.post('findOneAndUpdate', function(model : any) {
   // @ts-expect-error
   const modifiedFields : any = this.getUpdate().$set;
   delete modifiedFields.updated_at;
@@ -152,7 +176,7 @@ schema.post('findOneAndUpdate', function(model) {
       new_value: modifiedFields[field],
       object_id: model["_id"]
     });
-    history.save((err) => {
+    history.save((err : any) => {
       if (err) {
         console.error(
           `${Time.now()} - History creation error: `
@@ -171,7 +195,7 @@ schema.methods.comparePassword = function(password : string, callback : Function
   bcrypt.compare(
     password,
     this.password,
-    (err, match) => {
+    (err : any, match : any) => {
       if (err) return callback(err);
       callback(null, match);
     }

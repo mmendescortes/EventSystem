@@ -39,10 +39,6 @@
   import {default as Route} from './route';
 
 export default (() : Express => {
-  /*
-    Init the Mail module
-  */
-  global.mail = Mail();
   
   /*
     Init the HTTP/HTTPS module
@@ -60,9 +56,9 @@ export default (() : Express => {
   Database();
 
   /*
-    Init the Body module
+    Init the Mail module
   */
-  Environment();
+  global.mail = Mail();
   
   /*
     Init the Body module

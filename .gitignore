@@ -144,3 +144,6 @@ dist
 .replit
 replit.nix
 replit_zip_error_log.txt
+
+#npm
+package-lock.json
