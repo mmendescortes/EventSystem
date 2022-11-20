@@ -1,7 +1,7 @@
 /*
   Import the Pug library
 */
-import * as engine from 'pug';
+import {compileTemplate, compileFile, LocalsObject} from 'pug';
 
 /*
   Import the Path library
@@ -20,8 +20,8 @@ export class View {
   /*
     Send new message from Mail instance
   */
-  parse(data : string) {
-    const view : engine = engine.compileFile(this.template);
+  parse(data : LocalsObject) : string{
+    const view : compileTemplate = compileFile(this.template);
     return view(data);
   }
 }

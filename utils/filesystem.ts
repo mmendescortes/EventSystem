@@ -12,7 +12,8 @@ const path = require('path');
   Export the File System utility
 */
 export class FileSystem {
-  constructor(dir) {
+  path : string;
+  constructor(dir : string) {
     /*
       Set the date as this.date
     */
@@ -22,8 +23,8 @@ export class FileSystem {
   /*
     List files in a given directory
   */
-  dir(callback) {
-    fs.readdir(this.path, function (err, files) {
+  dir(callback : Function) : void {
+    fs.readdir(this.path, function (err : Error, files : Array<string>) {
         if (err) {
             return console.log('Unable to scan directory: ' + err);
         }
@@ -32,18 +33,18 @@ export class FileSystem {
     });
   }
 
-  read(path) {
+  read(path : string) : any {
     try {
       return fs.readFileSync(path, 'utf8');
-    } catch(err) {
+    } catch(err : any) {
       if (err) return err;
     }
   }
   /*
     Create file with given name and content
   */
-  create(name, content, message = 'File was created successfully!') {
-    fs.writeFile(this.path + '/' + name, content, function (err,data) {
+  create(name : string, content : string, message : string = 'File was created successfully!') : void {
+    fs.writeFile(this.path + '/' + name, content, function (err : string, data : string) {
       if (err) {
         return console.error(err);
       }
@@ -54,7 +55,7 @@ export class FileSystem {
   /*
     Return date set in class instance
   */
-  get() {
+  get() : string {
     return this.path;
   }
 }

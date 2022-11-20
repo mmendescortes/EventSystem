@@ -29,11 +29,13 @@ import {v4} from 'uuid';
   Create the User schema
 */
 const schema : Schema = new mongoose.Schema({
+  // @ts-expect-error
   username: {
     type: String,
     required: 'Username is required.',
     maxLength: 100
   },
+  // @ts-expect-error
   email: {
     type: String,
     trim: true,
@@ -46,20 +48,25 @@ const schema : Schema = new mongoose.Schema({
     ],
     maxLength: 191
   },
+  // @ts-expect-error
   password: {
     type: String,
     required: 'Password is required.'
   },
+  // @ts-expect-error
   email_confirmation_token: {
     type: String
   },
+  // @ts-expect-error
   email_confirmed: {
     type: Boolean,
     default: false
   },
+  // @ts-expect-error
   password_reset_token: {
     type: String
   },
+  // @ts-expect-error
   role: {
     type: String,
     enum: ['admin', 'staff', 'user'],
@@ -80,20 +87,30 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
   let isModifiedEmail : boolean;
   let isModifiedPassword : boolean;
   try {
+    // @ts-expect-error
     isModifiedPassword = this.isModified("password");
+    // @ts-expect-error
     isModifiedEmail = this.isModified("email");
   } catch (err) {
     if (err) {
+      // @ts-expect-error
       isModifiedPassword = !!this._update.password;
+      // @ts-expect-error
       this.password = this._update.password;
+      // @ts-expect-error
       isModifiedEmail = !!this._update.email;
+      // @ts-expect-error
       this.email = this._update.email;
     }
   }
+  // @ts-expect-error
   if (isModifiedEmail) {
+    // @ts-expect-error
     this.email_confirmed = false;
+    // @ts-expect-error
     this.email_confirmation_token = v4();
   }
+  // @ts-expect-error
   if (!isModifiedPassword) return next();
   bcrypt.genSalt(
     // The Number() is meant to work with repl.it
@@ -101,13 +118,16 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
     (err, salt) => {
       if (err) return next(err);
       bcrypt.hash(
+        // @ts-expect-error
         this.password,
         salt,
         (err, hash) => {
           if (err) return next(err);
           try {
+            // @ts-expect-error
             this._update.password = hash;
           } catch (err) {
+            // @ts-expect-error
             if (err) this.password = hash;
           }
           next();
@@ -121,6 +141,7 @@ schema.pre(/^(updateOne|save|findOneAndUpdate)/, function(next) {
   Add the change to history after updating
 */
 schema.post('findOneAndUpdate', function(model) {
+  // @ts-expect-error
   const modifiedFields : any = this.getUpdate().$set;
   delete modifiedFields.updated_at;
   Object.keys(modifiedFields).forEach((field) => {
@@ -146,7 +167,7 @@ schema.post('findOneAndUpdate', function(model) {
 /*
   Compare password to the hash existent on database
 */
-schema.methods.comparePassword = function(password, callback) {
+schema.methods.comparePassword = function(password : string, callback : Function) {
   bcrypt.compare(
     password,
     this.password,

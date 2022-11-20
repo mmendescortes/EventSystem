@@ -1,13 +1,14 @@
 /*
   Import the Mail utility
 */
-import mail = require('nodemailer');
+const mail = require('nodemailer');
 
 /*
   Export the Time utility
 */
 export class Mail {
-  constructor(host, port, secure, requireTLS, user, pass, ciphers) {
+  mail : any;
+  constructor(host : string, port : number, secure : boolean, requireTLS : boolean, user : string, pass : string, ciphers : string) {
     this.mail = mail.createTransport({
       host: host,
       port: port,
@@ -26,7 +27,7 @@ export class Mail {
   /*
     Send new message from Mail instance
   */
-  sendMessage(from, to, subject, html, callback) {
+  sendMessage(from : string, to : string, subject : string, html : string, callback : Function) : Function {
     return this.mail.sendMail({
       from: from,
       to: to,

@@ -2,7 +2,8 @@
   Export the Time utility
 */
 export class Time {
-  constructor(date = null) {
+  date : any;
+  constructor(date : any = null) {
     /*
       Set the date as this.date
     */
@@ -12,14 +13,14 @@ export class Time {
   /*
     Return the current date
   */
-  static now() {
+  static now() : Date {
     return new Date();
   }
 
   /*
     Return date set in class instance
   */
-  get() {
+  get() : any {
     return this.date;
   }
 }

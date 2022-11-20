@@ -1,7 +1,7 @@
 /*
   Import the Mongoose library
 */
-import {mongoose} from 'mongoose';
+import mongoose, {Mongoose, Connection} from 'mongoose';
     
 /*
   Import the Time utility
@@ -12,11 +12,14 @@ import {Time} from '../utils/time';
   Export the Database utility
 */
 export class Database {
+  mongoose : Mongoose;
+  connection : Connection;
   constructor() { 
     /*
       Assing the MongoDB connection string
     */
-    const connectionString = process.env.MONGODB_CONNECTION_STRING;
+    // @ts-expect-error
+    const connectionString : string = process.env.MONGODB_CONNECTION_STRING;
     
     /*
       Set the Mongoose connection
@@ -24,6 +27,7 @@ export class Database {
     mongoose.connect(
       connectionString,
       {
+        // @ts-expect-error
         useNewUrlParser: true
       }
     );
