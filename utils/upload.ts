@@ -11,7 +11,7 @@ import {v4} from 'uuid';
 /*
   Import the Multer library
 */
-import multer, {diskStorage} from 'multer';
+import multer, {StorageEngine} from 'multer';
 
 /*
   Import the Express library
@@ -19,8 +19,8 @@ import multer, {diskStorage} from 'multer';
 import {Request} from 'express';
 
 export class Upload {
-    upload : multer.Upload;
-    storage : diskStorage;
+    upload : any;
+    storage : StorageEngine;
     filter : (req : Request, file : any, cb : Function) => void;
     limits : { fileSize: number; };
     constructor(dataFolder : string = 'uploads', allowedExtensions : Array<string> = [], maxFileSize : number = 200) {
