@@ -26,7 +26,7 @@ import {ObjectId} from 'bson';
 /*
   Import the JWT library
 */
-import {jwt} from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 /*
   Import the UUID library
@@ -494,7 +494,7 @@ export class UserService {
   */
   resetPassword(token : string, password : string) : Promise<unknown> {
     return new Promise((res : any) => {
-      jwt.verify(token, process.env.USER_JWT_SECRET, function(err : Error, decoded : any) {
+      jwt.verify(token, process.env.USER_JWT_SECRET, (err : any, decoded : any) : void => {
         if (err) {
           res({
             'status': 401,

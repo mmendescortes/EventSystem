@@ -23,7 +23,7 @@ import {Time} from '../utils/time';
 /*
   Import the History model
 */
-import {History} from '../model/history';
+import {default as History} from '../model/history';
 
 /*
   Create the MODEL__NAME_CAPITALIZED schema
@@ -42,6 +42,7 @@ const schema : Schema = new mongoose.Schema({
   Add the change to history after updating
 */
 schema.post('findOneAndUpdate', function(model) {
+  // @ts-expect-error
   let modifiedFields : any = this.getUpdate().$set;
   delete modifiedFields.updated_at;
   Object.keys(modifiedFields).forEach((field) => {

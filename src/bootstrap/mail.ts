@@ -1,5 +1,5 @@
 import {Mail} from '../utils/mail';
-export default (() => {
+export default (() : Mail => {
   return new Mail(
     process.env.MAIL_HOSTNAME,
     process.env.MAIL_PORT,
@@ -9,4 +9,4 @@ export default (() => {
     process.env.MAIL_PASS,
     process.env.MAIL_TLS_CIPHERS,
   );
-})();
+});

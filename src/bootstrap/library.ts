@@ -3,7 +3,7 @@
 */
 import express, {Express} from 'express';
 
-export default (() => {
+export default (() : Express => {
   const app : Express = express();
   return app;
-})()
+})

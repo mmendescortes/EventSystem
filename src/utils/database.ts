@@ -18,7 +18,6 @@ export class Database {
     /*
       Assing the MongoDB connection string
     */
-    // @ts-expect-error
     const connectionString : string = process.env.MONGODB_CONNECTION_STRING;
     
     /*

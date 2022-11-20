@@ -8,16 +8,16 @@ import {FileSystem} from '../utils/filesystem';
 */
 import {Express} from 'express';
 
-export default ((app : Express) => {
+export default ((app : Express) : void => {
   /*
     Instantiate the FileSystem class to route/web
   */
-  const web : FileSystem = new FileSystem('../route/web');
+  const web : FileSystem = new FileSystem('route/web');
   
   /*
     Instantiate the FileSystem class to route/api
   */
-  const api : FileSystem = new FileSystem('../route/api');
+  const api : FileSystem = new FileSystem('route/api');
   
   /*
     Load route/web routes

@@ -6,12 +6,12 @@
   /*
     Init the Environment Variables module
   */
-  import './environment';
+  import {default as Environment} from './environment';
   
   /*
     Init the Database module
   */
-  import './database';
+  import {default as Database} from './database';
 
   /*
     Init the Mail module
@@ -38,16 +38,31 @@
   */
   import {default as Route} from './route';
 
-export default (() => {
+export default (() : Express => {
   /*
     Init the Mail module
   */
-  global.mail = Mail;
+  global.mail = Mail();
   
   /*
     Init the HTTP/HTTPS module
   */
-  const library : Express = Library;
+  const library : Express = Library();
+
+  /*
+    Init the Environment module
+  */
+  Environment();
+
+  /*
+    Init the Database module
+  */
+  Database();
+
+  /*
+    Init the Body module
+  */
+  Environment();
   
   /*
     Init the Body module
@@ -65,4 +80,4 @@ export default (() => {
   Route(library);
 
   return library;
-})();
+});

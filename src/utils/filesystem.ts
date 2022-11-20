@@ -17,7 +17,7 @@ export class FileSystem {
     /*
       Set the date as this.date
     */
-    this.path = path.join(__dirname, dir);
+    this.path = path.join(__dirname, '..', dir);
   }
 
   /*
