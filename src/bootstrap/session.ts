@@ -27,6 +27,10 @@ export default ((app : Express) : void => {
     let client : any = Redis.createClient({
       host: process.env.REDIS_HOST,
       port: process.env.REDIS_PORT,
+      socket: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
+      },
       legacyMode: true
     });
     client.on('error', (err : Error) : void => {
