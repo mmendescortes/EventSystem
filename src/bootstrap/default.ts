@@ -138,6 +138,57 @@ router.put('/ENDPOINT_NAME', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
+router.post('/ENDPOINT_NAMEs', function(req : Request, res : Response) {
+  res.setHeader('Allow', 'GET');
+  res.status(405);
+  res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+      "allowedMethods": 'GET'
+  });
+});
+
+/*
+  List all MODEL__NAME_CAPITALIZED
+*/
+router.get('/ENDPOINT_NAMEs', function(req : Request, res : Response) {
+  let MODEL_NAMEInstance : MODEL__NAME_CAPITALIZEDController = new MODEL__NAME_CAPITALIZEDController();
+  let result : Promise<unknown> = MODEL_NAMEInstance.getAll();
+  result.then((result : any)=>{
+    res.status(result.status);
+    res.json(result.response);
+  });
+});
+
+/*
+  Return not allowed method
+*/
+router.delete('/ENDPOINT_NAMEs', function(req : Request, res : Response) {
+  res.setHeader('Allow', 'GET');
+    res.status(405);
+    res.json({
+      "status": 405,
+      "message": 'Unsuported method used!',
+        "allowedMethods": 'GET'
+    });  
+});
+
+/*
+  Return not allowed method
+*/
+router.put('/ENDPOINT_NAMEs', function(req : Request, res : Response) {
+  res.setHeader('Allow', 'GET');
+    res.status(405);
+    res.json({
+        "status": 405,
+        "message": 'Unsuported method used!',
+        "allowedMethods": 'GET'
+  });       
+});
+
+/*
+  Return not allowed method
+*/
 router.post('/ENDPOINT_NAME/:id', function(req : Request, res : Response) {
   res.setHeader('Allow', 'PUT, DELETE, GET');
   res.status(405);
@@ -149,7 +200,7 @@ router.post('/ENDPOINT_NAME/:id', function(req : Request, res : Response) {
 });
 
 /*
-  List MODEL__NAME_CAPITALIZED
+  Get MODEL__NAME_CAPITALIZED by id
 */
 router.get('/ENDPOINT_NAME/:id', function(req : Request, res : Response) {
   let MODEL_NAMEInstance : MODEL__NAME_CAPITALIZEDController = new MODEL__NAME_CAPITALIZEDController();
@@ -229,6 +280,45 @@ export class MODEL__NAME_CAPITALIZEDService {
         {
           '_id': new ObjectId(id)
         },
+        (err : any, result : any) => {
+          if (err) {
+            console.error(
+              \`\${Time.now()} - MODEL_NAME get error: \`
+              +
+              err
+            );
+            if(err instanceof TypeError) {
+              res({
+                'status': 400,
+                'response': {
+                  'error': 'MODEL_NAME get error.'
+                }
+              });
+            } else {
+              res({
+                'status': 500,
+                'response': {
+                  'error': 'MODEL_NAME get error.'
+                }
+              });
+            }
+          }
+          res({
+            'status': 200,
+            'response': result
+          });
+        }
+      );
+    });
+  }
+
+  /*
+    Return all itens from MODEL__NAME_CAPITALIZED
+  */
+  getAll() : Promise<unknown> {
+    return new Promise((res : any) => {
+      MODEL__NAME_CAPITALIZED.find(
+        {},
         (err : any, result : any) => {
           if (err) {
             console.error(
@@ -425,6 +515,15 @@ export class MODEL__NAME_CAPITALIZEDController {
     getById(id : string) : Promise<unknown> {
         let MODEL_NAMEInstance : MODEL__NAME_CAPITALIZEDService = new MODEL__NAME_CAPITALIZEDService();
         let result : Promise<unknown> = MODEL_NAMEInstance.getById(id);
+        return result;
+    }
+
+    /*
+    Return all items from MODEL_NAME
+    */
+    getAll() : Promise<unknown> {
+        let MODEL_NAMEInstance : MODEL__NAME_CAPITALIZEDService = new MODEL__NAME_CAPITALIZEDService();
+        let result : Promise<unknown> = MODEL_NAMEInstance.getAll();
         return result;
     }
 
