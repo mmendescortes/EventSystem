@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  eventsystem:
+    image: eventsystem
+    restart: always
+    depends_on:
+      - "redis-eventsystem"
+  redis-eventsystem:
+    image: redis
+    restart: always
+    networks:
+      default:
+        aliases:
+          - redis-eventsystem
