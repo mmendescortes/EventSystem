@@ -73,7 +73,7 @@ export default (() : Express => {
   /*
     Init the Session module
   */
-  Session(library);
+  // Session(library);
   
   /*
     Init the CORS module
