@@ -10,6 +10,9 @@ services:
   redis-eventsystem:
     image: redis
     restart: always
+    configs:
+      - source: redis.conf
+        target: /usr/local/etc/redis/redis.conf
     networks:
       default:
         aliases:
