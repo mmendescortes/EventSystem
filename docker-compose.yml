@@ -7,10 +7,14 @@ services:
       - "redis-eventsystem"
     ports:
       - "80:3000"
+    networks:
+      - eventsystem
   redis-eventsystem:
     image: redis
+    command: ["redis-server", "--bind", "redis-eventsystem", "--port", "6379", "--protected-mode", "no"]
     restart: always
     networks:
-      default:
-        aliases:
-          - redis-eventsystem
+      - eventsystem
+networks:
+  eventsystem:
+    driver: bridge

@@ -31,7 +31,7 @@ export default ((app : Express) : void => {
     });
     client.on('error', (err : Error) : void => {
       console.error(
-        `${Time.now()} - Redis connection error.`
+        `${Time.now()} - Redis connection error: ${err}`
       );
     });
     client.on('connect', (err : Error) : void => {
