@@ -12,10 +12,13 @@ declare global {
             MAIL_USER : string;
             MAIL_PASS : string;
             MAIL_PORT : number;
+            MAIL_TLS_CIPHERS : string;
             MAIL_REQUIRE_TLS : boolean;
             MAIL_SECURE : boolean;
             USER_JWT_SECRET : string;
-            MAIL_TLS_CIPHERS : string;
+            REDIS_HOST : string;
+            REDIS_PORT : number;
+            REDIS_SECRET : string;
         }
     }
 }

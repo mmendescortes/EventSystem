@@ -23,7 +23,10 @@ import {default as History} from '../model/history';
 */
 import {v4} from 'uuid';
 
-
+/*
+  Import the View utility
+*/
+import {View} from '../utils/view';
 
 /*
   Create the User schema
@@ -110,6 +113,32 @@ schema.pre(/^(updateOne|findOneAndUpdate)/, function(next : any) {
     this.email_confirmed = false;
     // @ts-expect-error
     this.email_confirmation_token = v4();
+    let view : View = new View('email', 'confirmEmailLink');
+    global.mail.sendMessage(
+      process.env.MAIL_USER,
+      // @ts-expect-error
+      this.email,
+      "Confirm your e-mail!",
+      view.parse({
+        // @ts-expect-error
+        user: this.email,
+        app: {
+          protocol: process.env.APP_PROTOCOL,
+          host: process.env.APP_HOST,
+          port: process.env.APP_PORT,
+          email: process.env.APP_EMAIL,
+        }
+      }),
+      (err : Error) => {
+        if(err){
+          console.error(
+            `${Time.now()} - email confirmation link error: `
+            +
+            err
+          );
+        }
+      }
+    )
   }
   // @ts-expect-error
   if (!isModifiedPassword) return next();

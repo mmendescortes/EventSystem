@@ -123,7 +123,7 @@ switch(args[0]) {
       } else {
         setTimeout(n, 1000);
       }
-    })()
+    })();
     break;
   default:
     console.info('Here goes the option list...');

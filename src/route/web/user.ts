@@ -14,304 +14,109 @@ import {View} from '../../utils/view';
 import express, {Express, Request, Response, Router} from 'express';
 
 /*
+  Import the JWT library
+*/
+import * as jwt from 'jsonwebtoken';
+
+/*
   Create a new router for User
 */
 const router : Router = express.Router();
 
 /*
-  Create User
+  Sign in to the application
 */
-router.post('/signin', function(req : Request, res : Response) {
+router.get('/signin', (req : Request, res : Response) => {
+  let view : View = new View('web', 'signin');
+  res.status(200);
+  res.send(view.parse({
+    status: 200,
+    app: {
+      email: process.env.APP_EMAIL
+    }
+  }));
+});
+
+/*
+  Sign up to the application
+*/
+router.get('/signup', (req : Request, res : Response) => {
+  let view : View = new View('web', 'signup');
+  res.status(200);
+  res.send(view.parse({
+    status: 200,
+    app: {
+      email: process.env.APP_EMAIL
+    }
+  }));
+});
+
+/*
+  Sign out of the application
+*/
+router.get('/signout', (req : Request, res : Response) => {
+  req.session.destroy(() =>{
+    res.redirect('/');
+  });
+});
+
+/*
+  Sign in to the application
+*/
+router.post('/signin', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController(req.body);
-  let result : Promise<unknown> = userInstance.signin()
+  let result : Promise<unknown> = userInstance.signin();
   result.then((result : any)=>{
-    res.status(result.status);
-    res.send("");
+    if(result.status === 200) {
+      jwt.verify(result.response, process.env.USER_JWT_SECRET, (err : any, decoded : any) : void => {
+        if (!err) {
+          req.session.user=decoded;
+        }
+        res.status(302);
+        res.redirect('/');
+      });
+    } else {
+      let view : View = new View('web', 'signin');
+      res.status(result.status);
+      res.send(view.parse({
+        status: result.status,
+        app: {
+          email: process.env.APP_EMAIL
+        }
+      }));
+    }
   });
 });
 
 /*
-  Return not allowed method
+  Sign up to the application
 */
-router.get('/signin', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'POST'
-  });  
-});
-
-/*
-  Return not allowed method
-*/
-router.delete('/signin', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-    res.status(405);
-    res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-        "allowedMethods": 'POST'
-    });  
-});
-
-/*
-  Return not allowed method
-*/
-router.put('/signin', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-    res.status(405);
-    res.json({
-        "status": 405,
-        "message": 'Unsuported method used!',
-        "allowedMethods": 'POST'
-  });       
-});
-
-/*
-  Create User
-*/
-router.post('/user', function(req : Request, res : Response) {
+router.post('/signup', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController(req.body);
-  let result : Promise<unknown> = userInstance.create()
+  let result : Promise<unknown> = userInstance.create();
   result.then((result : any)=>{
+    let view : View = new View('web', 'accountCreated');
     res.status(result.status);
-    res.send("");
+    res.send(view.parse({
+      status: result.status,
+      app: {
+        email: process.env.APP_EMAIL
+      }
+    }));
   });
 });
 
 /*
-  Return not allowed method
+  Confirm user email
 */
-router.get('/user', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'POST'
-  });  
-});
-
-/*
-  Return not allowed method
-*/
-router.delete('/user', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-    res.status(405);
-    res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-        "allowedMethods": 'POST'
-    });  
-});
-
-/*
-  Return not allowed method
-*/
-router.put('/user', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST')
-    res.status(405);
-    res.json({
-        "status": 405,
-        "message": 'Unsuported method used!',
-        "allowedMethods": 'POST'
-  });       
-});
-
-/*
-  Return not allowed method
-*/
-router.post('/user/:id', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'PUT, DELETE, GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'PUT, DELETE, GET'
-  });
-});
-
-/*
-  List User
-*/
-router.get('/user/:id', function(req : Request, res : Response) {
-  let userInstance : UserController = new UserController();
-  let result : Promise<unknown> = userInstance.getById(req.params.id)
-  result.then((result : any)=>{
-    res.status(result.status);
-    res.send("");
-  });
-});
-
-/*
-  Delete User
-*/
-router.delete('/user/:id', function(req : Request, res : Response) {
-  let userInstance : UserController = new UserController();
-  let result : Promise<unknown> = userInstance.delete(req.params.id)
-  result.then((result : any)=>{
-    res.status(result.status);
-    res.send("");
-  });
-});
-
-/*
-  Update User
-*/
-router.put('/user/:id', function(req : Request, res : Response) {
-  let userInstance : UserController = new UserController();
-  let result : Promise<unknown> = userInstance.update(req.params.id, req.body)
-  result.then((result : any)=>{
-    res.status(result.status);
-    res.send("");
-  });    
-});
-
-/*
-  Return not allowed method
-*/
-router.post('/user/confirm/email/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-
-/*
-  Return not allowed method
-*/
-router.get('/user/confirm/email/:token', function(req : Request, res : Response) {
+router.get('/user/confirm/email/:token', (req : Request, res : Response) => {
   let view : View = new View('web', 'confirmEmail');
   res.status(200);
-  res.send(view.parse());
-});
-
-/*
-  Return not allowed method
-*/
-router.delete('/user/confirm/email/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-
-/*
-  Confirm user's e-mail
-*/
-router.put('/user/confirm/email/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-/*
-  Return not allowed method
-*/
-router.post('/user/reset/password/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-
-/*
-  Return not allowed method
-*/
-router.get('/user/reset/password/:token', function(req : Request, res : Response) {
-  res.status(200);
-  res.send("");
-});
-
-/*
-  Return not allowed method
-*/
-router.delete('/user/reset/password/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-
-/*
-  Reset user's password
-*/
-router.put('/user/reset/password/:token', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'GET')
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'GET'
-  });
-});
-
-/*
-  Send password reset link to user's e-mail
-*/
-router.post('/user/reset/password', function(req : Request, res : Response) {
-  let userInstance : UserController = new UserController();
-  let result : Promise<unknown> = userInstance.sendResetPasswordEmail(req.body.email);
-  result.then((result : any)=>{
-    res.status(result.status);
-    res.json(result.response);
-  });
-});
-
-/*
-  Return not allowed method
-*/
-router.get('/user/reset/password', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST');
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'POST'
-  });
-});
-
-/*
-  Return not allowed method
-*/
-router.delete('/user/reset/password', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST');
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'POST'
-  });
-});
-
-/*
-  Return not allowed method
-*/
-router.put('/user/reset/password', function(req : Request, res : Response) {
-  res.setHeader('Allow', 'POST');
-  res.status(405);
-  res.json({
-      "status": 405,
-      "message": 'Unsuported method used!',
-      "allowedMethods": 'POST'
-  });
+  res.send(view.parse({
+    app: {
+      email: process.env.APP_EMAIL
+    }
+  }));
 });
 
 /*

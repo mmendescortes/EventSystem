@@ -107,47 +107,13 @@ export class UserService {
                   }
                 });
               }
-              if(result.email_confirmed) {
-                const token : string = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
-                  expiresIn: 300
-                });
-                res({
-                  'status': 200,
-                  'response': token
-                });
-              } else {
-                let view : View = new View('email', 'confirmEmailLink');
-                global.mail.sendMessage(
-                  process.env.MAIL_USER,
-                  result.email,
-                  "Confirm your e-mail!",
-                  view.parse({
-                    user: result,
-                    app: {
-                      protocol: process.env.APP_PROTOCOL,
-                      host: process.env.APP_HOST,
-                      port: process.env.APP_PORT,
-                      email: process.env.APP_EMAIL,
-                    }
-                  }),
-                  (err : Error) => {
-                    if(err){
-                      res({
-                        'status': 500,
-                        'response': {
-                          'error': 'email confirmation link was not sent, an error happened.'
-                        }
-                      });
-                    }
-                    res({
-                      'status': 200,
-                      'response': {
-                        'message': 'Please confirm your e-mail.'
-                      }
-                    });
-                  }
-                )
-              }
+              const token : string = jwt.sign(result.toJSON(), process.env.USER_JWT_SECRET, {
+                expiresIn: 300
+              });
+              res({
+                'status': 200,
+                'response': token
+              });
             });
           } else {
             res({
@@ -225,53 +191,54 @@ export class UserService {
             +
             err
           );
-            if(err instanceof TypeError) {
-              res({
-                'status': 400,
-                'response': {
-                  'error': 'user creation error.'
-                }
-              });
-            } else {
-              res({
-                'status': 500,
-                'response': {
-                  'error': 'user creation error.'
-                }
-              });
-            }
-        }
-        let view : View = new View('email', 'confirmEmailLink');
-        global.mail.sendMessage(
-          process.env.MAIL_USER,
-          this.user.email,
-          "Confirm your e-mail!",
-          view.parse({
-            user: this.user,
-            app: {
-              protocol: process.env.APP_PROTOCOL,
-              host: process.env.APP_HOST,
-              port: process.env.APP_PORT,
-              email: process.env.APP_EMAIL,
-            }
-          }),
-          (err : Error) => {
-            if(err){
-              res({
-                'status': 500,
-                'response': {
-                  'error': 'user creation error.'
-                }
-              });
-            }
+          if(err instanceof TypeError) {
             res({
-              'status': 201,
+              'status': 400,
               'response': {
-                'message': 'user creation completed.'
+                'error': 'user creation error.'
+              }
+            });
+          } else {
+            res({
+              'status': 500,
+              'response': {
+                'error': 'user creation error.'
               }
             });
           }
-        )
+        } else {
+          let view : View = new View('email', 'confirmEmailLink');
+          global.mail.sendMessage(
+            process.env.MAIL_USER,
+            this.user.email,
+            "Confirm your e-mail!",
+            view.parse({
+              user: this.user,
+              app: {
+                protocol: process.env.APP_PROTOCOL,
+                host: process.env.APP_HOST,
+                port: process.env.APP_PORT,
+                email: process.env.APP_EMAIL,
+              }
+            }),
+            (err : Error) => {
+              if(err){
+                res({
+                  'status': 500,
+                  'response': {
+                    'error': 'user creation error.'
+                  }
+                });
+              }
+              res({
+                'status': 201,
+                'response': {
+                  'message': 'user creation completed.'
+                }
+              });
+            }
+          )
+        }
       });
     });
   }

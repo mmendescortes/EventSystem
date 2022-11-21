@@ -27,6 +27,11 @@
     Init the Body module
   */
   import {default as Body} from './body';
+
+  /*
+    Init the Session module
+  */
+    import {default as Session} from './session';
   
   /*
     Init the CORS module
@@ -64,6 +69,11 @@ export default (() : Express => {
     Init the Body module
   */
   Body(library);
+
+  /*
+    Init the Session module
+  */
+  Session(library);
   
   /*
     Init the CORS module

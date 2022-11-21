@@ -16,10 +16,10 @@ const router : Router = express.Router();
 /*
   Create User
 */
-router.post('/signin', function(req : Request, res : Response) {
+router.post('/signin', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController(req.body);
   let result : Promise<unknown> = userInstance.signin();
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });
@@ -28,7 +28,7 @@ router.post('/signin', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.get('/signin', function(req : Request, res : Response) {
+router.get('/signin', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
@@ -41,7 +41,7 @@ router.get('/signin', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.delete('/signin', function(req : Request, res : Response) {
+router.delete('/signin', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
@@ -54,7 +54,7 @@ router.delete('/signin', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.put('/signin', function(req : Request, res : Response) {
+router.put('/signin', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
@@ -67,10 +67,10 @@ router.put('/signin', function(req : Request, res : Response) {
 /*
   Create User
 */
-router.post('/user', function(req : Request, res : Response) {
+router.post('/user', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController(req.body);
   let result : Promise<unknown> = userInstance.create();
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });
@@ -79,7 +79,7 @@ router.post('/user', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.get('/user', function(req : Request, res : Response) {
+router.get('/user', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
@@ -92,7 +92,7 @@ router.get('/user', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.delete('/user', function(req : Request, res : Response) {
+router.delete('/user', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
@@ -105,7 +105,7 @@ router.delete('/user', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.put('/user', function(req : Request, res : Response) {
+router.put('/user', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
     res.status(405);
     res.json({
@@ -118,7 +118,7 @@ router.put('/user', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.post('/user/:id', function(req : Request, res : Response) {
+router.post('/user/:id', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT, DELETE, GET');
   res.status(405);
   res.json({
@@ -131,10 +131,10 @@ router.post('/user/:id', function(req : Request, res : Response) {
 /*
   List User
 */
-router.get('/user/:id', function(req : Request, res : Response) {
+router.get('/user/:id', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.getById(req.params.id);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });
@@ -143,10 +143,10 @@ router.get('/user/:id', function(req : Request, res : Response) {
 /*
   Delete User
 */
-router.delete('/user/:id', function(req : Request, res : Response) {
+router.delete('/user/:id', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.delete(req.params.id);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });
@@ -155,10 +155,10 @@ router.delete('/user/:id', function(req : Request, res : Response) {
 /*
   Update User
 */
-router.put('/user/:id', function(req : Request, res : Response) {
+router.put('/user/:id', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.update(req.params.id, req.body);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });    
@@ -167,7 +167,7 @@ router.put('/user/:id', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.post('/user/confirm/email/:token', function(req : Request, res : Response) {
+router.post('/user/confirm/email/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -180,7 +180,7 @@ router.post('/user/confirm/email/:token', function(req : Request, res : Response
 /*
   Return not allowed method
 */
-router.get('/user/confirm/email/:token', function(req : Request, res : Response) {
+router.get('/user/confirm/email/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -193,7 +193,7 @@ router.get('/user/confirm/email/:token', function(req : Request, res : Response)
 /*
   Return not allowed method
 */
-router.delete('/user/confirm/email/:token', function(req : Request, res : Response) {
+router.delete('/user/confirm/email/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -206,10 +206,10 @@ router.delete('/user/confirm/email/:token', function(req : Request, res : Respon
 /*
   Confirm user's e-mail
 */
-router.put('/user/confirm/email/:token', function(req : Request, res : Response) {
+router.put('/user/confirm/email/:token', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.confirmEmail(req.params.token);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   }); 
@@ -218,7 +218,7 @@ router.put('/user/confirm/email/:token', function(req : Request, res : Response)
 /*
   Return not allowed method
 */
-router.post('/user/reset/password/:token', function(req : Request, res : Response) {
+router.post('/user/reset/password/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -231,7 +231,7 @@ router.post('/user/reset/password/:token', function(req : Request, res : Respons
 /*
   Return not allowed method
 */
-router.get('/user/reset/password/:token', function(req : Request, res : Response) {
+router.get('/user/reset/password/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -244,7 +244,7 @@ router.get('/user/reset/password/:token', function(req : Request, res : Response
 /*
   Return not allowed method
 */
-router.delete('/user/reset/password/:token', function(req : Request, res : Response) {
+router.delete('/user/reset/password/:token', (req : Request, res : Response) => {
   res.setHeader('Allow', 'PUT');
   res.status(405);
   res.json({
@@ -257,10 +257,10 @@ router.delete('/user/reset/password/:token', function(req : Request, res : Respo
 /*
   Reset user's password
 */
-router.put('/user/reset/password/:token', function(req : Request, res : Response) {
+router.put('/user/reset/password/:token', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.resetPassword(req.params.token, req.body.password);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   }); 
@@ -269,10 +269,10 @@ router.put('/user/reset/password/:token', function(req : Request, res : Response
 /*
   Send password reset link to user's e-mail
 */
-router.post('/user/reset/password', function(req : Request, res : Response) {
+router.post('/user/reset/password', (req : Request, res : Response) => {
   let userInstance : UserController = new UserController();
   let result : Promise<unknown> = userInstance.sendResetPasswordEmail(req.body.email);
-  result.then((result : any)=>{
+  result.then((result : any) => {
     res.status(result.status);
     res.json(result.response);
   });
@@ -281,7 +281,7 @@ router.post('/user/reset/password', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.get('/user/reset/password', function(req : Request, res : Response) {
+router.get('/user/reset/password', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
@@ -294,7 +294,7 @@ router.get('/user/reset/password', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.delete('/user/reset/password', function(req : Request, res : Response) {
+router.delete('/user/reset/password', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
@@ -307,7 +307,7 @@ router.delete('/user/reset/password', function(req : Request, res : Response) {
 /*
   Return not allowed method
 */
-router.put('/user/reset/password', function(req : Request, res : Response) {
+router.put('/user/reset/password', (req : Request, res : Response) => {
   res.setHeader('Allow', 'POST');
   res.status(405);
   res.json({
