@@ -13,4 +13,4 @@ RUN npm install --prefix src/ \
 && rm -rf dist
 COPY .env ./
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
