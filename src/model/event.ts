@@ -51,7 +51,7 @@ schema.post('findOneAndUpdate', function(model) {
   delete modifiedFields.updated_at;
   Object.keys(modifiedFields).forEach((field) => {
     const history : Document = new History({
-      collection_name: 'Event',
+      collection_name: 'events',
       collection_field: field,
       old_value: model[field],
       new_value: modifiedFields[field],
